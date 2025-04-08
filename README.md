@@ -14,5 +14,5 @@ VroomIQ est une application Node.js conçue pour comparer différents modèles d
    ```bash
    git clone https://github.com/LukasHES63/VroomIQ.git
    cd VroomIQ
-2. **Ouvrir le fichier "index.html**
+2. **Ouvrir le fichier "index.html"**
  
