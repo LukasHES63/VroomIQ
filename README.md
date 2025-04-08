@@ -5,7 +5,7 @@ VroomIQ est une application Node.js conçue pour comparer différents modèles d
 ## 🚀 Fonctionnalités
 - Comparaison de modèles de voitures par marque, année, motorisation, etc.
 - Affichage clair et synthétique des caractéristiques techniques.
-- Utilisation de Firebase pour la gestion des données.
+- Utilisation de Firebase et Firebase SDK pour la gestion des données.
 
 ## 🛠️ Installation
 
