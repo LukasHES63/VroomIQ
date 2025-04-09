@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main  # Déclenche le déploiement sur chaque push dans la branche 'main'
-
+      
 jobs:
   deploy:
     runs-on: ubuntu-latest
