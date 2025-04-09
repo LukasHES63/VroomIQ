@@ -4,11 +4,12 @@ on:
   push:
     branches:
       - main  # Déclenche le déploiement sur chaque push dans la branche 'main'
-      
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-  steps:
+
+    steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -23,10 +24,10 @@ jobs:
       - name: Install Firebase CLI
         run: npm install -g firebase-tools  # Installe Firebase CLI globalement
 
-       - name: Authenticate with Firebase
+      - name: Authenticate with Firebase
         run: |
-          firebase login:ci --token "1//03giLCxc4eqJbCgYIARAAGAMSNwF-L9IrOp18Hev4uF6LAFy0emz3EBcPH72h5_wtnYKxKpzpuD5wpizGWgskNCF_uDT3MulxUTU"
+          firebase login:ci --token "1//03giLCxc4eqJbCgYIARAAGAMSNwF-L9IrOp18Hev4uF6LAFy0emz3EBcPH72h5_wtnYKxKpzpuD5wpizGWgskNCF_uDT3MulxUTU"  # Remplace par ton token Firebase généré
 
       - name: Deploy to Firebase Hosting
         run: |
-          firebase deploy --only hosting --project "vroomiq-efa93" --token "1//03giLCxc4eqJbCgYIARAAGAMSNwF-L9IrOp18Hev4uF6LAFy0emz3EBcPH72h5_wtnYKxKpzpuD5wpizGWgskNCF_uDT3MulxUTU"
+          firebase deploy --only hosting --project "vroomiq-efa93" --token "1//03giLCxc4eqJbCgYIARAAGAMSNwF-L9IrOp18Hev4uF6LAFy0emz3EBcPH72h5_wtnYKxKpzpuD5wpizGWgskNCF_uDT3MulxUTU"  # Remplace par ton ID projet et token
