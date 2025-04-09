@@ -3,8 +3,8 @@ name: Deploy to Firebase Hosting on push
 on:
   push:
     branches:
-      - main  # Cette ligne permet de déclencher le déploiement sur chaque push sur la branche 'main'
-      
+      - main  # Déclenche le déploiement sur chaque push dans la branche 'main'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,17 +16,17 @@ jobs:
       - name: Set up Node.js (version 20)
         uses: actions/setup-node@v3
         with:
-          node-version: '20'  # Choisis la version 20, qui est compatible avec firebase-tools v14
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install
-        
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools  # Installe Firebase CLI globalement
+
       - name: Set Firebase project
-        run: firebase use --add ${{ secrets.FIREBASE_PROJECT_ID }}
-        
+        run: firebase use --add ${{ secrets.FIREBASE_PROJECT_ID }}  # Définit le projet Firebase à utiliser
+
       - name: Deploy to Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_TOKEN }}"
-          channelId: live
+        run: |
+          firebase deploy --only hosting --project ${{ secrets.FIREBASE_PROJECT_ID }} --token ${{ secrets.FIREBASE_TOKEN }}  # Déploiement avec le projet et le token
