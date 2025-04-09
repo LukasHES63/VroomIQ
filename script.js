@@ -17,8 +17,9 @@ const db = firebase.firestore();
 
 console.log("Firebase initialisé avec succès");
 
-// Variable globale pour stocker les véhicules
-let vehicles = {};
+// Variables globales pour stocker les véhicules
+let allVehicles = [];
+let filteredVehicles = [];
 
 // Initialisation de la page
 document.addEventListener('DOMContentLoaded', async () => {
@@ -30,8 +31,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const querySnapshot = await db.collection("vehicles").get();
         console.log("Nombre de véhicules récupérés:", querySnapshot.size);
         
+        allVehicles = [];
         querySnapshot.forEach((doc) => {
-            vehicles[doc.id] = doc.data();
+            allVehicles.push({ id: doc.id, ...doc.data() });
             console.log("Véhicule chargé:", doc.id, doc.data());
         });
 
@@ -40,14 +42,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         const vehicle2Select = document.getElementById('vehicle2');
         if (vehicle1Select && vehicle2Select) {
             console.log("Remplissage des menus déroulants...");
-            // Remplir les menus déroulants
-            for (const [id, vehicle] of Object.entries(vehicles)) {
-                const optionText = `${vehicle.marque} - ${vehicle.modele} ${vehicle.generation} - ${vehicle.motorisation?.code || 'Non renseigné'}`;
-                const option = `<option value="${id}">${optionText}</option>`;
-                vehicle1Select.insertAdjacentHTML('beforeend', option);
-                vehicle2Select.insertAdjacentHTML('beforeend', option);
-            }
-
+            
+            // Mettre à jour le filtre des marques
+            updateBrandFilter();
+            
+            // Appliquer les filtres initiaux
+            applyFilters();
+            
+            // Ajouter les écouteurs d'événements pour les filtres
+            document.getElementById('brand-filter').addEventListener('change', applyFilters);
+            document.getElementById('fuel-filter').addEventListener('change', applyFilters);
+            document.getElementById('critair-filter').addEventListener('change', applyFilters);
+            
             const vehicle1Details = document.getElementById('vehicle1-details');
             const vehicle2Details = document.getElementById('vehicle2-details');
             const compareButton = document.getElementById('compareButton');
@@ -79,8 +85,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const v1 = params.get('v1');
             const v2 = params.get('v2');
             
-            if (v1 && v2 && vehicles[v1] && vehicles[v2]) {
-                displayComparison(vehicles[v1], vehicles[v2]);
+            if (v1 && v2 && allVehicles.find(v => v.id === v1) && allVehicles.find(v => v.id === v2)) {
+                displayComparison(allVehicles.find(v => v.id === v1), allVehicles.find(v => v.id === v2));
             } else {
                 window.location.href = 'index.html';
             }
@@ -104,7 +110,7 @@ function updateVehicleDetails(vehicleId, detailsElement) {
         return;
     }
 
-    const vehicle = vehicles[vehicleId];
+    const vehicle = allVehicles.find(v => v.id === vehicleId);
     const getValue = (value) => value || 'Non renseigné';
 
     detailsElement.innerHTML = `
@@ -427,28 +433,138 @@ async function saveVehicle() {
     }
 }
 
-function loadVehicles() {
-    const vehiclesList = document.getElementById('vehicles-list');
-    vehiclesList.innerHTML = '<h2>Liste des véhicules</h2><p class="form-help">Cliquez sur un véhicule pour le modifier ou le supprimer.</p>';
-
-    db.collection('vehicles').get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            const vehicle = doc.data();
-            const vehicleElement = document.createElement('div');
-            vehicleElement.className = 'vehicle-item';
-            vehicleElement.innerHTML = `
-                <div class="vehicle-info">
-                    <h4>${vehicle.marque} - ${vehicle.modele} ${vehicle.generation} - ${vehicle.motorisation?.code || 'Non renseigné'}</h4>
-                    <p>ID: ${doc.id}</p>
-                </div>
-                <div class="vehicle-actions">
-                    <button onclick="editVehicle('${doc.id}')" class="edit-btn">Modifier</button>
-                    <button onclick="deleteVehicle('${doc.id}')" class="delete-btn">Supprimer</button>
-                    <button onclick="downloadVehicleJson('${doc.id}')" class="download-btn">Télécharger JSON</button>
-                </div>
-            `;
-            vehiclesList.appendChild(vehicleElement);
+// Fonction pour charger les véhicules avec filtres
+async function loadVehicles() {
+    try {
+        console.log("Chargement des véhicules pour l'admin...");
+        const snapshot = await db.collection('vehicles').get();
+        allVehicles = [];
+        snapshot.forEach(doc => {
+            allVehicles.push({ id: doc.id, ...doc.data() });
+            console.log("Véhicule chargé:", doc.id, doc.data());
         });
+        
+        // Mettre à jour l'affichage des véhicules dans la page admin
+        const vehiclesList = document.getElementById('vehicles-list');
+        if (vehiclesList) {
+            vehiclesList.innerHTML = '';
+            allVehicles.forEach(vehicle => {
+                const vehicleElement = document.createElement('div');
+                vehicleElement.className = 'vehicle-item';
+                vehicleElement.innerHTML = `
+                    <div class="vehicle-info">
+                        <h3>${vehicle.marque} ${vehicle.modele}</h3>
+                        <p>${vehicle.motorisation?.type || 'Type non spécifié'} - ${vehicle.motorisation?.code || 'Code non spécifié'}</p>
+                    </div>
+                    <div class="vehicle-actions">
+                        <button onclick="editVehicle('${vehicle.id}')" class="edit-button">Modifier</button>
+                        <button onclick="deleteVehicle('${vehicle.id}')" class="delete-button">Supprimer</button>
+                        <button onclick="downloadVehicleJson('${vehicle.id}')" class="download-button">Télécharger JSON</button>
+                    </div>
+                `;
+                vehiclesList.appendChild(vehicleElement);
+            });
+        }
+        
+        console.log("Nombre de véhicules chargés:", allVehicles.length);
+    } catch (error) {
+        console.error('Erreur lors du chargement des véhicules:', error);
+        alert('Erreur lors du chargement des véhicules: ' + error.message);
+    }
+}
+
+// Fonction pour mettre à jour le filtre des marques
+function updateBrandFilter() {
+    const brandFilter = document.getElementById('brand-filter');
+    const brands = [...new Set(allVehicles.map(v => v.marque))].sort();
+    
+    // Garder l'option "Toutes les marques"
+    brandFilter.innerHTML = '<option value="">Toutes les marques</option>';
+    
+    // Ajouter les marques
+    brands.forEach(brand => {
+        const option = document.createElement('option');
+        option.value = brand;
+        option.textContent = brand;
+        brandFilter.appendChild(option);
+    });
+}
+
+// Fonction pour appliquer les filtres
+function applyFilters() {
+    const selectedBrand = document.getElementById('brand-filter').value;
+    const selectedFuel = document.getElementById('fuel-filter').value;
+    const selectedCritair = document.getElementById('critair-filter').value;
+    
+    console.log("Application des filtres:", { selectedBrand, selectedFuel, selectedCritair });
+    
+    // Filtrer les véhicules
+    filteredVehicles = allVehicles.filter(vehicle => {
+        const brandMatch = !selectedBrand || vehicle.marque === selectedBrand;
+        const fuelMatch = !selectedFuel || vehicle.motorisation?.type === selectedFuel;
+        const critairMatch = !selectedCritair || vehicle.critair?.toString() === selectedCritair;
+        return brandMatch && fuelMatch && critairMatch;
+    });
+    
+    console.log("Véhicules filtrés:", filteredVehicles.length);
+    
+    // Mettre à jour les menus déroulants
+    updateVehicleSelectors();
+}
+
+// Fonction pour trier les véhicules
+function sortVehicles(sortBy) {
+    filteredVehicles.sort((a, b) => {
+        switch (sortBy) {
+            case 'marque':
+                return a.marque.localeCompare(b.marque);
+            case 'marque-desc':
+                return b.marque.localeCompare(a.marque);
+            case 'puissance':
+                return (a.motorisation?.puissance || 0) - (b.motorisation?.puissance || 0);
+            case 'puissance-desc':
+                return (b.motorisation?.puissance || 0) - (a.motorisation?.puissance || 0);
+            case 'consommation':
+                return (a.consommation?.mixte || 0) - (b.consommation?.mixte || 0);
+            case 'consommation-desc':
+                return (b.consommation?.mixte || 0) - (a.consommation?.mixte || 0);
+            default:
+                return 0;
+        }
+    });
+}
+
+// Fonction pour mettre à jour les sélecteurs de véhicules
+function updateVehicleSelectors() {
+    const vehicle1Select = document.getElementById('vehicle1');
+    const vehicle2Select = document.getElementById('vehicle2');
+    
+    // Sauvegarder les valeurs sélectionnées
+    const selectedVehicle1 = vehicle1Select.value;
+    const selectedVehicle2 = vehicle2Select.value;
+    
+    // Mettre à jour les options
+    updateVehicleSelector(vehicle1Select, selectedVehicle1);
+    updateVehicleSelector(vehicle2Select, selectedVehicle2);
+    
+    // Mettre à jour le bouton de comparaison
+    updateCompareButton();
+}
+
+// Fonction pour mettre à jour un sélecteur de véhicule
+function updateVehicleSelector(select, selectedValue) {
+    // Garder l'option "Choisissez un véhicule"
+    select.innerHTML = '<option value="">Choisissez un véhicule</option>';
+    
+    // Ajouter les véhicules filtrés
+    filteredVehicles.forEach(vehicle => {
+        const option = document.createElement('option');
+        option.value = vehicle.id;
+        option.textContent = `${vehicle.marque} ${vehicle.modele} - ${vehicle.motorisation?.code || ''}`;
+        if (vehicle.id === selectedValue) {
+            option.selected = true;
+        }
+        select.appendChild(option);
     });
 }
 

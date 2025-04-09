@@ -7,6 +7,11 @@
     --border-color: #e2e8f0;
     --success-color: #22c55e;
     --error-color: #ef4444;
+    --accent-color: #ff6b6b;
+    --light-gray: #e9ecef;
+    --border-radius: 8px;
+    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
 }
 
 /* Reset et styles de base */
@@ -584,34 +589,43 @@ footer {
 
 .vehicle-actions {
     display: flex;
-    gap: 1rem;
+    gap: 10px;
+    margin-top: 10px;
 }
 
-.edit-btn, .delete-btn {
-    padding: 0.5rem 1rem;
+.vehicle-actions button {
+    padding: 8px 16px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    color: white;
     font-weight: 500;
-    transition: all 0.2s ease;
 }
 
-.edit-btn {
-    background-color: var(--primary-color);
-    color: white;
+.vehicle-actions .edit-button {
+    background-color: #2563eb;
 }
 
-.edit-btn:hover {
-    background-color: var(--secondary-color);
+.vehicle-actions .edit-button:hover {
+    background-color: #1d4ed8;
 }
 
-.delete-btn {
-    background-color: var(--error-color);
-    color: white;
-}
-
-.delete-btn:hover {
+.vehicle-actions .delete-button {
     background-color: #dc2626;
+}
+
+.vehicle-actions .delete-button:hover {
+    background-color: #b91c1c;
+}
+
+.vehicle-actions .download-button {
+    background-color: #16a34a;
+}
+
+.vehicle-actions .download-button:hover {
+    background-color: #15803d;
 }
 
 /* Section d'import */
@@ -779,4 +793,67 @@ footer {
 
 .download-btn:hover {
     background-color: #45a049;
+}
+
+/* Filtres */
+.filters-section {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filter-group label {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.filter-select {
+    padding: 0.75rem;
+    border: 1px solid var(--light-gray);
+    border-radius: var(--border-radius);
+    background-color: white;
+    font-size: 1rem;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.filter-select:hover {
+    border-color: var(--primary-color);
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .filters-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .vehicle-selectors {
+        flex-direction: column;
+    }
+    
+    .admin-actions {
+        flex-direction: column;
+    }
+    
+    .vehicles-list {
+        grid-template-columns: 1fr;
+    }
 } 
