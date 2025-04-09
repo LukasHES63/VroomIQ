@@ -3,23 +3,26 @@ name: Deploy to Firebase Hosting on push
 on:
   push:
     branches:
-      - main
+      - main  # Cette ligne permet de déclencher le déploiement sur chaque push sur la branche 'main'
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install Node.js
+      - name: Set up Node.js (version 20)
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'  # Choisis la version 20, qui est compatible avec firebase-tools v14
 
       - name: Install dependencies
         run: npm install
+
+      - name: Build the project (si tu n'as pas de build, supprime cette étape)
+        run: npm run build  # Si tu n’as pas besoin de build (ex : un site statique), tu peux supprimer cette ligne
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
