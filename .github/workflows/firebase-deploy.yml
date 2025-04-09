@@ -23,8 +23,8 @@ jobs:
 
       - name: Authenticate with Firebase
         run: |
-          firebase login:ci --token "1//03giLCxc4eqJbCgYIARAAGAMSNwF-L9IrOp18Hev4uF6LAFy0emz3EBcPH72h5_wtnYKxKpzpuD5wpizGWgskNCF_uDT3MulxUTU"  # Remplace par ton token Firebase généré
+          firebase login:ci --token "1//03giLCxc4eqJbCgYIARAAGAMSNwF-L9IrOp18Hev4uF6LAFy0emz3EBcPH72h5_wtnYKxKpzpuD5wpizGWgskNCF_uDT3MulxUTU"
 
       - name: Deploy to Firebase Hosting
         run: |
-          firebase deploy --only hosting --project "vroomiq-efa93" --token "1//03giLCxc4eqJbCgYIARAAGAMSNwF-L9IrOp18Hev4uF6LAFy0emz3EBcPH72h5_wtnYKxKpzpuD5wpizGWgskNCF_uDT3MulxUTU"  # Remplace par ton ID projet et token
+          firebase deploy --only hosting --project "vroomiq-efa93" --token "1//03giLCxc4eqJbCgYIARAAGAMSNwF-L9IrOp18Hev4uF6LAFy0emz3EBcPH72h5_wtnYKxKpzpuD5wpizGWgskNCF_uDT3MulxUTU"
