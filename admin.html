@@ -34,8 +34,8 @@
         </div>
 
         <div id="vehicleForm" class="vehicle-form" style="display: none;">
-            <h2>Ajouter/Modifier un véhicule</h2>
-            <p class="form-help">Remplissez les champs ci-dessous pour ajouter ou modifier un véhicule. Les champs marqués d'un * sont obligatoires.</p>
+            <h2 id="form-title">Ajouter un véhicule</h2>
+            <p class="form-help">Remplissez les champs ci-dessous pour ajouter un nouveau véhicule à la base de données.</p>
             
             <div class="form-section">
                 <h3>Informations générales</h3>
@@ -155,21 +155,12 @@
             <div class="form-section">
                 <h3>Émissions</h3>
                 <div class="form-group">
-                    <label for="vehicle-co2">CO2 (g/km)</label>
-                    <input type="number" id="vehicle-co2">
+                    <label for="vehicle-co2">Émissions CO2 (g/km)</label>
+                    <input type="number" id="vehicle-co2" step="0.1">
                 </div>
                 <div class="form-group">
                     <label for="vehicle-euro-norm">Norme Euro</label>
-                    <select id="vehicle-euro-norm">
-                        <option value="">Sélectionner</option>
-                        <option value="Euro 1">Euro 1</option>
-                        <option value="Euro 2">Euro 2</option>
-                        <option value="Euro 3">Euro 3</option>
-                        <option value="Euro 4">Euro 4</option>
-                        <option value="Euro 5">Euro 5</option>
-                        <option value="Euro 6">Euro 6</option>
-                        <option value="Euro 6d">Euro 6d</option>
-                    </select>
+                    <input type="text" id="vehicle-euro-norm" placeholder="Ex: Euro 6b">
                 </div>
                 <div class="form-group">
                     <label for="vehicle-critair">Vignette Crit'Air</label>

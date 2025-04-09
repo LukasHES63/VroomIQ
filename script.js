@@ -346,6 +346,29 @@ function generateComparisonSummary(v1, v2) {
     return summary;
 }
 
+function showVehicleForm(mode = 'add') {
+    const form = document.getElementById('vehicleForm');
+    const formTitle = document.getElementById('form-title');
+    const formHelp = document.querySelector('.form-help');
+    
+    if (mode === 'add') {
+        formTitle.textContent = 'Ajouter un véhicule';
+        formHelp.textContent = 'Remplissez les champs ci-dessous pour ajouter un nouveau véhicule à la base de données.';
+        clearForm();
+    } else {
+        formTitle.textContent = 'Modifier un véhicule';
+        formHelp.textContent = 'Modifiez les champs ci-dessous pour mettre à jour les informations du véhicule.';
+    }
+    
+    form.style.display = 'block';
+    form.scrollIntoView({ behavior: 'smooth' });
+}
+
+function hideVehicleForm() {
+    const form = document.getElementById('vehicleForm');
+    form.style.display = 'none';
+}
+
 // Admin functions
 async function saveVehicle() {
     const vehicleId = document.getElementById('vehicle-id-input').value;
@@ -396,7 +419,7 @@ async function saveVehicle() {
 
     try {
         await db.collection('vehicles').doc(vehicleId).set(vehicleData);
-        clearForm();
+        hideVehicleForm();
         loadVehicles();
         alert('Véhicule enregistré avec succès!');
     } catch (error) {
@@ -416,11 +439,12 @@ function loadVehicles() {
             vehicleElement.innerHTML = `
                 <div class="vehicle-info">
                     <h4>${vehicle.marque} - ${vehicle.modele} ${vehicle.generation} - ${vehicle.motorisation?.code || 'Non renseigné'}</h4>
-                    <p>ID: ${vehicle.id}</p>
+                    <p>ID: ${doc.id}</p>
                 </div>
                 <div class="vehicle-actions">
                     <button onclick="editVehicle('${doc.id}')" class="edit-btn">Modifier</button>
                     <button onclick="deleteVehicle('${doc.id}')" class="delete-btn">Supprimer</button>
+                    <button onclick="downloadVehicleJson('${doc.id}')" class="download-btn">Télécharger JSON</button>
                 </div>
             `;
             vehiclesList.appendChild(vehicleElement);
@@ -439,7 +463,10 @@ async function editVehicle(vehicleId) {
             document.getElementById('vehicle-generation').value = vehicle.generation;
             document.getElementById('vehicle-phase').value = vehicle.phase || '';
 
-            document.getElementById('vehicle-fuel').value = vehicle.motorisation?.type || '';
+            // Correction du type de carburant
+            const fuelType = vehicle.motorisation?.type?.toLowerCase() || '';
+            document.getElementById('vehicle-fuel').value = fuelType;
+
             document.getElementById('vehicle-motor-code').value = vehicle.motorisation?.code || '';
             document.getElementById('vehicle-power').value = vehicle.motorisation?.puissance || '';
             document.getElementById('vehicle-power-rpm').value = vehicle.motorisation?.puissance_tr_min || '';
@@ -448,7 +475,10 @@ async function editVehicle(vehicleId) {
             document.getElementById('vehicle-engine-size').value = vehicle.motorisation?.cylindree || '';
             document.getElementById('vehicle-architecture').value = vehicle.motorisation?.architecture || '';
 
-            document.getElementById('vehicle-gearbox-type').value = vehicle.boite_vitesse?.type || '';
+            // Correction du type de boîte de vitesses
+            const gearboxType = vehicle.boite_vitesse?.type?.toLowerCase() || '';
+            document.getElementById('vehicle-gearbox-type').value = gearboxType;
+
             document.getElementById('vehicle-gear-count').value = vehicle.boite_vitesse?.rapports || '';
 
             document.getElementById('vehicle-vmax').value = vehicle.performance?.vmax || '';
@@ -459,9 +489,17 @@ async function editVehicle(vehicleId) {
             document.getElementById('vehicle-consumption-highway').value = vehicle.consommation?.autoroute || '';
 
             document.getElementById('vehicle-co2').value = vehicle.emission_co2 || '';
+
+            // Simplification de la gestion de la norme Euro
             document.getElementById('vehicle-euro-norm').value = vehicle.norme_euro || '';
-            document.getElementById('vehicle-critair').value = vehicle.critair || '';
+
+            // Correction de la vignette Crit'Air
+            const critairValue = vehicle.critair?.toString() || '';
+            document.getElementById('vehicle-critair').value = critairValue;
+
             document.getElementById('vehicle-url').value = vehicle.url || '';
+
+            showVehicleForm('edit');
         }
     } catch (error) {
         alert('Erreur lors de la modification: ' + error.message);
@@ -731,5 +769,61 @@ async function importVehiclesFromText() {
         document.getElementById('json-content').value = '';
     } catch (error) {
         alert('Erreur lors de l\'analyse du JSON : ' + error.message);
+    }
+}
+
+async function downloadVehicleJson(vehicleId) {
+    try {
+        const doc = await db.collection('vehicles').doc(vehicleId).get();
+        if (doc.exists) {
+            const vehicle = doc.data();
+            const vehicleData = [{
+                id: vehicleId,
+                marque: vehicle.marque,
+                modele: vehicle.modele,
+                generation: vehicle.generation,
+                phase: vehicle.phase,
+                motorisation: {
+                    type: vehicle.motorisation?.type,
+                    code: vehicle.motorisation?.code,
+                    puissance: vehicle.motorisation?.puissance,
+                    puissance_tr_min: vehicle.motorisation?.puissance_tr_min,
+                    couple: vehicle.motorisation?.couple,
+                    couple_tr_min: vehicle.motorisation?.couple_tr_min,
+                    cylindree: vehicle.motorisation?.cylindree,
+                    architecture: vehicle.motorisation?.architecture
+                },
+                boite_vitesse: {
+                    type: vehicle.boite_vitesse?.type,
+                    rapports: vehicle.boite_vitesse?.rapports
+                },
+                performance: {
+                    vmax: vehicle.performance?.vmax,
+                    acceleration_0_100: vehicle.performance?.acceleration_0_100
+                },
+                consommation: {
+                    mixte: vehicle.consommation?.mixte,
+                    urbaine: vehicle.consommation?.urbaine,
+                    autoroute: vehicle.consommation?.autoroute
+                },
+                emission_co2: vehicle.emission_co2,
+                norme_euro: vehicle.norme_euro,
+                critair: vehicle.critair,
+                url: vehicle.url
+            }];
+
+            const jsonString = JSON.stringify(vehicleData, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${vehicleId}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    } catch (error) {
+        alert('Erreur lors du téléchargement du JSON : ' + error.message);
     }
 } 
