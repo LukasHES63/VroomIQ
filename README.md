@@ -17,7 +17,7 @@ VroomIQ est une application Node.js conçue pour comparer différents modèles d
  
 ## Versions
 
-1.0.0 : Première version du projet
-1.1.0 : Ajout d'une base de donnée
-1.2.0 : Ajout d'une console d'administration
-1.1.1 : Modification de style
+- 1.0.0 : Première version du projet
+- 1.1.0 : Ajout d'une base de donnée
+- 1.2.0 : Ajout d'une console d'administration
+- 1.2.1 : Modification de style
