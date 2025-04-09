@@ -21,9 +21,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools  # Installe Firebase CLI globalement
-
       - name: Authenticate with Firebase
         run: |
           firebase login:ci --token "1//03giLCxc4eqJbCgYIARAAGAMSNwF-L9IrOp18Hev4uF6LAFy0emz3EBcPH72h5_wtnYKxKpzpuD5wpizGWgskNCF_uDT3MulxUTU"  # Remplace par ton token Firebase généré
