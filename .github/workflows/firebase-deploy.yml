@@ -23,8 +23,4 @@ jobs:
         
       - name: Deploy to Firebase
         run: |
-          firebase deploy --only hosting --project vroomiq-efa93 --token ${{ secrets.FIREBASE_TOKEN }}
-
-      - name: Deploy to Firebase
-        run: |
-          firebase deploy --only hosting --project ${{ secrets.FIREBASE_PROJECT }} --token ${{ secrets.FIREBASE_TOKEN }}
+          firebase deploy --only hosting --project vroomiq-efa93 --token 1//03giLCxc4eqJbCgYIARAAGAMSNwF-L9IrOp18Hev4uF6LAFy0emz3EBcPH72h5_wtnYKxKpzpuD5wpizGWgskNCF_uDT3MulxUTU
