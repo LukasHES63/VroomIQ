@@ -20,10 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Build the project (si tu n'as pas de build, supprime cette étape)
-        run: npm run build  # Si tu n’as pas besoin de build (ex : un site statique), tu peux supprimer cette ligne
-
+        
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
