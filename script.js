@@ -46,13 +46,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Mettre à jour le filtre des marques
             updateBrandFilter();
             
-            // Appliquer les filtres initiaux
-            applyFilters();
+            // Initialiser les sélecteurs de véhicules
+            updateVehicleSelectors();
             
             // Ajouter les écouteurs d'événements pour les filtres
-            document.getElementById('brand-filter').addEventListener('change', applyFilters);
-            document.getElementById('fuel-filter').addEventListener('change', applyFilters);
-            document.getElementById('critair-filter').addEventListener('change', applyFilters);
+            document.getElementById('brand1-filter').addEventListener('change', () => updateVehicleSelectors());
+            document.getElementById('brand2-filter').addEventListener('change', () => updateVehicleSelectors());
+            document.getElementById('fuel1-filter').addEventListener('change', () => updateVehicleSelectors());
+            document.getElementById('fuel2-filter').addEventListener('change', () => updateVehicleSelectors());
+            document.getElementById('critair1-filter').addEventListener('change', () => updateVehicleSelectors());
+            document.getElementById('critair2-filter').addEventListener('change', () => updateVehicleSelectors());
             
             const vehicle1Details = document.getElementById('vehicle1-details');
             const vehicle2Details = document.getElementById('vehicle2-details');
@@ -475,40 +478,35 @@ async function loadVehicles() {
 
 // Fonction pour mettre à jour le filtre des marques
 function updateBrandFilter() {
-    const brandFilter = document.getElementById('brand-filter');
+    const brand1Filter = document.getElementById('brand1-filter');
+    const brand2Filter = document.getElementById('brand2-filter');
     const brands = [...new Set(allVehicles.map(v => v.marque))].sort();
     
-    // Garder l'option "Toutes les marques"
-    brandFilter.innerHTML = '<option value="">Toutes les marques</option>';
-    
-    // Ajouter les marques
-    brands.forEach(brand => {
-        const option = document.createElement('option');
-        option.value = brand;
-        option.textContent = brand;
-        brandFilter.appendChild(option);
+    // Mettre à jour les deux filtres de marque
+    [brand1Filter, brand2Filter].forEach(filter => {
+        filter.innerHTML = '<option value="">Toutes les marques</option>';
+        brands.forEach(brand => {
+            const option = document.createElement('option');
+            option.value = brand;
+            option.textContent = brand;
+            filter.appendChild(option);
+        });
     });
 }
 
 // Fonction pour appliquer les filtres
 function applyFilters() {
-    const selectedBrand = document.getElementById('brand-filter').value;
-    const selectedFuel = document.getElementById('fuel-filter').value;
-    const selectedCritair = document.getElementById('critair-filter').value;
-    
-    console.log("Application des filtres:", { selectedBrand, selectedFuel, selectedCritair });
-    
-    // Filtrer les véhicules
+    const fuelFilter = document.getElementById('fuel-filter').value;
+    const critairFilter = document.getElementById('critair-filter').value;
+
+    // Filtrer les véhicules en fonction des critères (carburant et Crit'Air)
     filteredVehicles = allVehicles.filter(vehicle => {
-        const brandMatch = !selectedBrand || vehicle.marque === selectedBrand;
-        const fuelMatch = !selectedFuel || vehicle.motorisation?.type === selectedFuel;
-        const critairMatch = !selectedCritair || vehicle.critair?.toString() === selectedCritair;
-        return brandMatch && fuelMatch && critairMatch;
+        const fuelMatch = !fuelFilter || vehicle.motorisation?.type === fuelFilter;
+        const critairMatch = !critairFilter || vehicle.critair?.toString() === critairFilter;
+        return fuelMatch && critairMatch;
     });
-    
-    console.log("Véhicules filtrés:", filteredVehicles.length);
-    
-    // Mettre à jour les menus déroulants
+
+    // Mettre à jour les sélecteurs de véhicules
     updateVehicleSelectors();
 }
 
@@ -538,29 +536,42 @@ function sortVehicles(sortBy) {
 function updateVehicleSelectors() {
     const vehicle1Select = document.getElementById('vehicle1');
     const vehicle2Select = document.getElementById('vehicle2');
-    
-    // Sauvegarder les valeurs sélectionnées
+    const brand1Filter = document.getElementById('brand1-filter').value;
+    const brand2Filter = document.getElementById('brand2-filter').value;
+    const fuel1Filter = document.getElementById('fuel1-filter').value;
+    const fuel2Filter = document.getElementById('fuel2-filter').value;
+    const critair1Filter = document.getElementById('critair1-filter').value;
+    const critair2Filter = document.getElementById('critair2-filter').value;
     const selectedVehicle1 = vehicle1Select.value;
     const selectedVehicle2 = vehicle2Select.value;
-    
-    // Mettre à jour les options
-    updateVehicleSelector(vehicle1Select, selectedVehicle1);
-    updateVehicleSelector(vehicle2Select, selectedVehicle2);
-    
+
+    // Mettre à jour le premier sélecteur avec ses filtres
+    updateVehicleSelector(vehicle1Select, selectedVehicle1, brand1Filter, fuel1Filter, critair1Filter);
+
+    // Mettre à jour le second sélecteur avec ses filtres
+    updateVehicleSelector(vehicle2Select, selectedVehicle2, brand2Filter, fuel2Filter, critair2Filter);
+
     // Mettre à jour le bouton de comparaison
     updateCompareButton();
 }
 
-// Fonction pour mettre à jour un sélecteur de véhicule
-function updateVehicleSelector(select, selectedValue) {
+function updateVehicleSelector(select, selectedValue, brandFilter, fuelFilter, critairFilter) {
     // Garder l'option "Choisissez un véhicule"
     select.innerHTML = '<option value="">Choisissez un véhicule</option>';
     
+    // Filtrer les véhicules selon les critères
+    const vehiclesToShow = allVehicles.filter(vehicle => {
+        const brandMatch = !brandFilter || (vehicle.marque?.toLowerCase() || '') === brandFilter.toLowerCase();
+        const fuelMatch = !fuelFilter || (vehicle.motorisation?.type?.toLowerCase() || '') === fuelFilter.toLowerCase();
+        const critairMatch = !critairFilter || (vehicle.critair?.toString() || '') === critairFilter;
+        return brandMatch && fuelMatch && critairMatch;
+    });
+    
     // Ajouter les véhicules filtrés
-    filteredVehicles.forEach(vehicle => {
+    vehiclesToShow.forEach(vehicle => {
         const option = document.createElement('option');
         option.value = vehicle.id;
-        option.textContent = `${vehicle.marque} ${vehicle.modele} - ${vehicle.motorisation?.code || ''}`;
+        option.textContent = `${vehicle.marque} - ${vehicle.modele} - ${vehicle.motorisation?.code || ''}`;
         if (vehicle.id === selectedValue) {
             option.selected = true;
         }

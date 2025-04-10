@@ -30,51 +30,82 @@
         <section class="selection-container">
             <h2>Sélectionnez deux véhicules à comparer</h2>
             
-            <div class="filters-section">
-                <div class="filter-group">
-                    <label for="brand-filter">Filtrer par marque :</label>
-                    <select id="brand-filter" class="filter-select">
-                        <option value="">Toutes les marques</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="fuel-filter">Filtrer par carburant :</label>
-                    <select id="fuel-filter" class="filter-select">
-                        <option value="">Tous les carburants</option>
-                        <option value="Essence">Essence</option>
-                        <option value="Diesel">Diesel</option>
-                        <option value="Hybride">Hybride</option>
-                        <option value="Électrique">Électrique</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="critair-filter">Filtrer par Crit'Air :</label>
-                    <select id="critair-filter" class="filter-select">
-                        <option value="">Toutes les vignettes</option>
-                        <option value="0">Crit'Air 0</option>
-                        <option value="1">Crit'Air 1</option>
-                        <option value="2">Crit'Air 2</option>
-                        <option value="3">Crit'Air 3</option>
-                        <option value="4">Crit'Air 4</option>
-                        <option value="5">Crit'Air 5</option>
-                    </select>
-                </div>
-            </div>
-            
             <div class="vehicle-selectors">
                 <div class="vehicle-selector">
                     <h3>Premier véhicule</h3>
-                    <select id="vehicle1" class="vehicle-select">
-                        <option value="">Choisissez un véhicule</option>
-                    </select>
+                    <div class="filter-group">
+                        <label for="brand1-filter">Marque :</label>
+                        <select id="brand1-filter" class="filter-select">
+                            <option value="">Toutes les marques</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="fuel1-filter">Carburant :</label>
+                        <select id="fuel1-filter" class="filter-select">
+                            <option value="">Tous les carburants</option>
+                            <option value="Essence">Essence</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="Hybride">Hybride</option>
+                            <option value="Électrique">Électrique</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="critair1-filter">Crit'Air :</label>
+                        <select id="critair1-filter" class="filter-select">
+                            <option value="">Toutes les vignettes</option>
+                            <option value="0">Crit'Air 0</option>
+                            <option value="1">Crit'Air 1</option>
+                            <option value="2">Crit'Air 2</option>
+                            <option value="3">Crit'Air 3</option>
+                            <option value="4">Crit'Air 4</option>
+                            <option value="5">Crit'Air 5</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="vehicle1">Modèle :</label>
+                        <select id="vehicle1" class="vehicle-select">
+                            <option value="">Choisissez un véhicule</option>
+                        </select>
+                    </div>
                     <div id="vehicle1-details" class="vehicle-details"></div>
                 </div>
 
                 <div class="vehicle-selector">
                     <h3>Second véhicule</h3>
-                    <select id="vehicle2" class="vehicle-select">
-                        <option value="">Choisissez un véhicule</option>
-                    </select>
+                    <div class="filter-group">
+                        <label for="brand2-filter">Marque :</label>
+                        <select id="brand2-filter" class="filter-select">
+                            <option value="">Toutes les marques</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="fuel2-filter">Carburant :</label>
+                        <select id="fuel2-filter" class="filter-select">
+                            <option value="">Tous les carburants</option>
+                            <option value="Essence">Essence</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="Hybride">Hybride</option>
+                            <option value="Électrique">Électrique</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="critair2-filter">Crit'Air :</label>
+                        <select id="critair2-filter" class="filter-select">
+                            <option value="">Toutes les vignettes</option>
+                            <option value="0">Crit'Air 0</option>
+                            <option value="1">Crit'Air 1</option>
+                            <option value="2">Crit'Air 2</option>
+                            <option value="3">Crit'Air 3</option>
+                            <option value="4">Crit'Air 4</option>
+                            <option value="5">Crit'Air 5</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="vehicle2">Modèle :</label>
+                        <select id="vehicle2" class="vehicle-select">
+                            <option value="">Choisissez un véhicule</option>
+                        </select>
+                    </div>
                     <div id="vehicle2-details" class="vehicle-details"></div>
                 </div>
             </div>

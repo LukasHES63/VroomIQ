@@ -29,7 +29,7 @@
         <h1>Administration VroomIQ</h1>
         
         <div class="admin-actions">
-            <button id="toggleFormBtn" class="action-button">Afficher le formulaire d'ajout</button>
+            <button id="toggleFormBtn" class="action-button">Afficher/Masquer formulaire</button>
             <button onclick="loadVehicles()" class="action-button">Actualiser la liste</button>
         </div>
 
@@ -238,10 +238,10 @@
             const button = this;
             if (form.style.display === 'none') {
                 form.style.display = 'block';
-                button.textContent = 'Masquer le formulaire';
+                button.textContent = 'Afficher/Masquer formulaire';
             } else {
                 form.style.display = 'none';
-                button.textContent = 'Afficher le formulaire';
+                button.textContent = 'Afficher/Masquer formulaire';
             }
         });
     </script>
