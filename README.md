@@ -45,10 +45,3 @@ Pour exécuter un test en local vous pouvez suivre les instructions suivantes :
 5. Les résultats des tests sont disponibles dans le répertoire playwright-report, nous retrouvons une page html de vérification des tests
    ```bash
    index.html
-
-
-
- 
- 
-
-
