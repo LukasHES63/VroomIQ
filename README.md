@@ -30,5 +30,4 @@ Si vous souhaitez accéder au site voici le lien : https://vroomiq-efa93.firebas
  ## 🧪Les tests
  Nous utilisons l'utilitaire Playwright
 
-## 📊 Monitoring
 
