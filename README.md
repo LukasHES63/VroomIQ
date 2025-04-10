@@ -12,6 +12,7 @@ Si vous souhaitez accéder au site voici le lien : https://vroomiq-efa93.firebas
 - 1.2.1 : Ajout de fonction d'administration avancé
 - 1.2.2 : Ajout de filtres sur l'index.html
 - 1.2.3 : Ajout de playwright pour les tests
+- 1.2.4 : Correction de certains problèmes
 
 ## 🚀 Fonctionnalités
 - Comparaison de modèles de voitures par marque, année, motorisation, etc.
