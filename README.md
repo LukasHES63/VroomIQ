@@ -25,7 +25,10 @@ Si vous souhaitez accéder au site voici le lien : https://vroomiq-efa93.firebas
    git clone https://github.com/LukasHES63/VroomIQ.git
    cd VroomIQ
 2. **Ouvrir le fichier "index.html"**
-
+   ```bash
+   index.html
  ## 🧪Les tests
  Nous utilisons l'utilitaire Playwright
+
+## 📊 Monitoring
 
