@@ -12,9 +12,14 @@ const firebaseConfig = {
 console.log("Initialisation de Firebase...");
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const perf = firebase.performance();
+const analytics = firebase.analytics();
+
+// Activer le suivi des performances
+perf.dataCollectionEnabled = true;
+perf.instrumentationEnabled = true;
 
 console.log("Firebase initialisé avec succès");
 
@@ -26,6 +31,10 @@ let filteredVehicles = [];
 document.addEventListener('DOMContentLoaded', async () => {
     console.log("DOM chargé, début de l'initialisation...");
     
+    // Démarrer le suivi des performances de la page
+    const pageLoadTrace = perf.trace('page_load');
+    pageLoadTrace.start();
+    
     try {
         console.log("Tentative de récupération des véhicules depuis Firestore...");
         // Récupérer les véhicules depuis Firestore
@@ -36,6 +45,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         querySnapshot.forEach((doc) => {
             allVehicles.push({ id: doc.id, ...doc.data() });
             console.log("Véhicule chargé:", doc.id, doc.data());
+        });
+
+        // Envoyer un événement Analytics
+        analytics.logEvent('page_view', {
+            page_title: document.title,
+            page_location: window.location.href,
+            vehicle_count: allVehicles.length
         });
 
         // Si nous sommes sur la page d'accueil
@@ -101,10 +117,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     } catch (error) {
         console.error("Erreur lors de la récupération des véhicules:", error);
-        console.error("Détails de l'erreur:", error.message);
+        // Envoyer un événement d'erreur à Analytics
+        analytics.logEvent('error', {
+            error_message: error.message,
+            page_location: window.location.href
+        });
         if (error.stack) {
             console.error("Stack trace:", error.stack);
         }
+    } finally {
+        // Arrêter le suivi des performances
+        pageLoadTrace.stop();
     }
 });
 
