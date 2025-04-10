@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/" # ici, ton package.json est à la racine
+    schedule:
+      interval: "weekly" # vérifie les updates une fois par semaine
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "dep"
+    labels:
+      - "dependencies"
+      - "auto-update"
+    ignore:
+      - dependency-name: "firebase"
+        versions: [">=11"] # par exemple, on évite les MAJ majeures si on n'est pas prêt
