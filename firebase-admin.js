@@ -1,4 +1,3 @@
-import 'firebase/performance'; 
 const admin = require('firebase-admin');
 
 // Initialisation de Firebase Admin
@@ -12,4 +11,3 @@ admin.initializeApp({
 const db = admin.firestore();
 
 module.exports = { admin, db }; 
-const perf = firebase.performance();
