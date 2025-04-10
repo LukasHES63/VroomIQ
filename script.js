@@ -14,6 +14,7 @@ console.log("Initialisation de Firebase...");
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+const perf = firebase.performance();
 
 console.log("Firebase initialisé avec succès");
 

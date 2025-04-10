@@ -8,8 +8,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "firebase": "^11.6.0",
-    "firebase-admin": "^13.2.0"
+    "firebase": "^10.8.0",
+    "firebase-admin": "^11.11.0",
+    "@firebase/firestore": "^4.5.0",
+    "@firebase/performance": "^0.8.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.51.1",
