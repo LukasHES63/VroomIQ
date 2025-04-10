@@ -28,7 +28,27 @@ Si vous souhaitez accéder au site voici le lien : https://vroomiq-efa93.firebas
 2. **Ouvrir le fichier "index.html"**
    ```bash
    index.html
- ## 🧪Les tests
- Nous utilisons l'utilitaire Playwright
+   
+## 🧪Les tests
+Pour tester l'application, vous pouvez effectuer des tests manuelles toutefois nous proposons des scripts pour effectuer cette tâche. 
+Les scripts sont disponibles dans le répertoire "tests".
+
+Pour exécuter un test en local vous pouvez suivre les instructions suivantes :
+1. Nous avons besoins de Node.js installer le ici > https://nodejs.org/fr
+2. Ouvrez un terminal et dirigez-vous dans le répertoire du projet.
+3. Voici la commande a utiliser pour exécuter le script de test
+   ```bash
+   npx playwright test
+4. Si vous souhaitez exécuter un test spécifique voici la commande
+   ```bash
+   npx playwright test tests/ test_basic_usage.spec.ts
+5. Les résultats des tests sont disponibles dans le répertoire playwright-report, nous retrouvons une page html de vérification des tests
+   ```bash
+   index.html
+
+
+
+ 
+ 
 
 
