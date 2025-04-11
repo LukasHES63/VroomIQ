@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VroomIQ - Comparateur de Véhicules</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Import Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -18,15 +21,21 @@
         <nav>
             <div class="logo">VroomIQ</div>
             <div class="nav-links">
-                <a href="admin.html" class="nav-link admin-button">Espace Administrateur</a>
+                <a href="admin.html" class="nav-link admin-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"></path>
+                        <path d="M7 7h.01"></path>
+                    </svg>
+                    Espace Administrateur
+                </a>
             </div>
         </nav>
     </header>
 
     <main>
         <section class="hero">
-            <h1>Bienvenue sur VroomIQ</h1>
-            <p>Comparez facilement les caractéristiques de nos véhicules familiaux pour faire le meilleur choix.</p>
+            <h1>Comparez les véhicules en toute simplicité</h1>
+            <p>VroomIQ vous aide à trouver le véhicule qui correspond parfaitement à vos besoins grâce à une comparaison détaillée des caractéristiques techniques.</p>
         </section>
 
         <section class="selection-container">
@@ -36,13 +45,13 @@
                 <div class="vehicle-selector">
                     <h3>Premier véhicule</h3>
                     <div class="filter-group">
-                        <label for="brand1-filter">Marque :</label>
+                        <label for="brand1-filter">Marque</label>
                         <select id="brand1-filter" class="filter-select">
                             <option value="">Toutes les marques</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="fuel1-filter">Carburant :</label>
+                        <label for="fuel1-filter">Carburant</label>
                         <select id="fuel1-filter" class="filter-select">
                             <option value="">Tous les carburants</option>
                             <option value="Essence">Essence</option>
@@ -52,7 +61,7 @@
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="critair1-filter">Crit'Air :</label>
+                        <label for="critair1-filter">Vignette Crit'Air</label>
                         <select id="critair1-filter" class="filter-select">
                             <option value="">Toutes les vignettes</option>
                             <option value="0">Crit'Air 0</option>
@@ -64,7 +73,7 @@
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="vehicle1">Modèle :</label>
+                        <label for="vehicle1">Modèle</label>
                         <select id="vehicle1" class="vehicle-select">
                             <option value="">Choisissez un véhicule</option>
                         </select>
@@ -75,13 +84,13 @@
                 <div class="vehicle-selector">
                     <h3>Second véhicule</h3>
                     <div class="filter-group">
-                        <label for="brand2-filter">Marque :</label>
+                        <label for="brand2-filter">Marque</label>
                         <select id="brand2-filter" class="filter-select">
                             <option value="">Toutes les marques</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="fuel2-filter">Carburant :</label>
+                        <label for="fuel2-filter">Carburant</label>
                         <select id="fuel2-filter" class="filter-select">
                             <option value="">Tous les carburants</option>
                             <option value="Essence">Essence</option>
@@ -91,7 +100,7 @@
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="critair2-filter">Crit'Air :</label>
+                        <label for="critair2-filter">Vignette Crit'Air</label>
                         <select id="critair2-filter" class="filter-select">
                             <option value="">Toutes les vignettes</option>
                             <option value="0">Crit'Air 0</option>
@@ -103,7 +112,7 @@
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="vehicle2">Modèle :</label>
+                        <label for="vehicle2">Modèle</label>
                         <select id="vehicle2" class="vehicle-select">
                             <option value="">Choisissez un véhicule</option>
                         </select>
@@ -112,7 +121,15 @@
                 </div>
             </div>
 
-            <button id="compareButton" class="cta-button" disabled>Comparer les véhicules</button>
+            <button id="compareButton" class="cta-button" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 3v18"></path>
+                    <path d="M16 3v18"></path>
+                    <path d="M3 8h18"></path>
+                    <path d="M3 16h18"></path>
+                </svg>
+                Comparer les véhicules
+            </button>
         </section>
     </main>
 

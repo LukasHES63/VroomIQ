@@ -149,50 +149,68 @@ function updateVehicleDetails(vehicleId, detailsElement) {
     const vehicle = allVehicles.find(v => v.id === vehicleId);
     const getValue = (value) => value || 'Non renseigné';
 
-    detailsElement.innerHTML = `
-        <div class="vehicle-details-section">
-            <h4>Informations générales</h4>
-            <p><span class="label">Phase :</span> ${getValue(vehicle.phase)}</p>
-        </div>
+    // Animation de chargement
+    detailsElement.innerHTML = '<div class="loading-spinner"></div>';
+    
+    // Simuler un délai pour l'animation
+    setTimeout(() => {
+        detailsElement.innerHTML = `
+            <div class="vehicle-details-section">
+                <h4>Informations générales</h4>
+                <p><span class="label">Phase :</span> ${getValue(vehicle.phase)}</p>
+            </div>
 
-        <div class="vehicle-details-section">
-            <h4>Motorisation</h4>
-            <p><span class="label">Type :</span> ${getValue(vehicle.motorisation?.type)}</p>
-            <p><span class="label">Code :</span> ${getValue(vehicle.motorisation?.code)}</p>
-            <p><span class="label">Puissance :</span> ${getValue(vehicle.motorisation?.puissance)} ch</p>
-            <p><span class="label">Régime puissance :</span> ${getValue(vehicle.motorisation?.puissance_tr_min)} tr/min</p>
-            <p><span class="label">Couple :</span> ${getValue(vehicle.motorisation?.couple)} Nm</p>
-            <p><span class="label">Régime couple :</span> ${getValue(vehicle.motorisation?.couple_tr_min)} tr/min</p>
-            <p><span class="label">Cylindrée :</span> ${getValue(vehicle.motorisation?.cylindree)} cm³</p>
-            <p><span class="label">Architecture :</span> ${getValue(vehicle.motorisation?.architecture)}</p>
-        </div>
+            <div class="vehicle-details-section">
+                <h4>Motorisation</h4>
+                <p><span class="label">Type :</span> ${getValue(vehicle.motorisation?.type)}</p>
+                <p><span class="label">Code :</span> ${getValue(vehicle.motorisation?.code)}</p>
+                <p><span class="label">Puissance :</span> ${getValue(vehicle.motorisation?.puissance)} ch</p>
+                <p><span class="label">Régime puissance :</span> ${getValue(vehicle.motorisation?.puissance_tr_min)} tr/min</p>
+                <p><span class="label">Couple :</span> ${getValue(vehicle.motorisation?.couple)} Nm</p>
+                <p><span class="label">Régime couple :</span> ${getValue(vehicle.motorisation?.couple_tr_min)} tr/min</p>
+                <p><span class="label">Cylindrée :</span> ${getValue(vehicle.motorisation?.cylindree)} cm³</p>
+                <p><span class="label">Architecture :</span> ${getValue(vehicle.motorisation?.architecture)}</p>
+            </div>
 
-        <div class="vehicle-details-section">
-            <h4>Boîte de vitesses</h4>
-            <p><span class="label">Type :</span> ${getValue(vehicle.boite_vitesse?.type)}</p>
-            <p><span class="label">Nombre de rapports :</span> ${getValue(vehicle.boite_vitesse?.rapports)}</p>
-        </div>
+            <div class="vehicle-details-section">
+                <h4>Boîte de vitesses</h4>
+                <p><span class="label">Type :</span> ${getValue(vehicle.boite_vitesse?.type)}</p>
+                <p><span class="label">Nombre de rapports :</span> ${getValue(vehicle.boite_vitesse?.rapports)}</p>
+            </div>
 
-        <div class="vehicle-details-section">
-            <h4>Performances</h4>
-            <p><span class="label">Vitesse max :</span> ${getValue(vehicle.performance?.vmax)} km/h</p>
-            <p><span class="label">0-100 km/h :</span> ${getValue(vehicle.performance?.acceleration_0_100)}s</p>
-        </div>
+            <div class="vehicle-details-section">
+                <h4>Performances</h4>
+                <p><span class="label">Vitesse max :</span> ${getValue(vehicle.performance?.vmax)} km/h</p>
+                <p><span class="label">0-100 km/h :</span> ${getValue(vehicle.performance?.acceleration_0_100)}s</p>
+            </div>
 
-        <div class="vehicle-details-section">
-            <h4>Consommation (L/100km)</h4>
-            <p><span class="label">Mixte :</span> ${getValue(vehicle.consommation?.mixte)}</p>
-            <p><span class="label">Urbaine :</span> ${getValue(vehicle.consommation?.urbaine)}</p>
-            <p><span class="label">Autoroute :</span> ${getValue(vehicle.consommation?.autoroute)}</p>
-        </div>
+            <div class="vehicle-details-section">
+                <h4>Consommation (L/100km)</h4>
+                <p><span class="label">Mixte :</span> ${getValue(vehicle.consommation?.mixte)}</p>
+                <p><span class="label">Urbaine :</span> ${getValue(vehicle.consommation?.urbaine)}</p>
+                <p><span class="label">Autoroute :</span> ${getValue(vehicle.consommation?.autoroute)}</p>
+            </div>
 
-        <div class="vehicle-details-section">
-            <h4>Émissions</h4>
-            <p><span class="label">CO2 :</span> ${getValue(vehicle.emission_co2)} g/km</p>
-            <p><span class="label">Norme Euro :</span> ${getValue(vehicle.norme_euro)}</p>
-            <p><span class="label">Vignette Crit'Air :</span> ${getValue(vehicle.critair)}</p>
-        </div>
-    `;
+            <div class="vehicle-details-section">
+                <h4>Émissions</h4>
+                <p><span class="label">CO2 :</span> ${getValue(vehicle.emission_co2)} g/km</p>
+                <p><span class="label">Norme Euro :</span> ${getValue(vehicle.norme_euro)}</p>
+                <p><span class="label">Vignette Crit'Air :</span> ${getValue(vehicle.critair)}</p>
+            </div>
+        `;
+
+        // Animation d'apparition
+        const sections = detailsElement.querySelectorAll('.vehicle-details-section');
+        sections.forEach((section, index) => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                section.style.transition = 'all 0.3s ease-out';
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    }, 300);
 }
 
 function updateCompareButton() {
@@ -200,7 +218,19 @@ function updateCompareButton() {
     const vehicle2Select = document.getElementById('vehicle2');
     const compareButton = document.getElementById('compareButton');
 
-    compareButton.disabled = !vehicle1Select.value || !vehicle2Select.value || vehicle1Select.value === vehicle2Select.value;
+    const isDisabled = !vehicle1Select.value || !vehicle2Select.value || vehicle1Select.value === vehicle2Select.value;
+    
+    if (isDisabled !== compareButton.disabled) {
+        compareButton.disabled = isDisabled;
+        
+        // Animation du bouton
+        if (!isDisabled) {
+            compareButton.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                compareButton.style.transform = 'scale(1)';
+            }, 200);
+        }
+    }
 }
 
 function displayComparison(vehicle1, vehicle2) {
@@ -408,7 +438,79 @@ function showVehicleForm(mode = 'add') {
 
 function hideVehicleForm() {
     const form = document.getElementById('vehicleForm');
-    form.style.display = 'none';
+    const toggleButton = document.getElementById('toggleFormButton');
+    const formTitle = document.getElementById('form-section-title');
+    
+    // Afficher temporairement le formulaire pour le défilement
+    form.style.display = 'block';
+    
+    // Faire défiler vers le titre
+    formTitle.scrollIntoView();
+    
+    // Cacher le formulaire après un court délai
+    setTimeout(() => {
+        form.style.display = 'none';
+        toggleButton.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14M5 12h14"/>
+            </svg>
+            Afficher le formulaire
+        `;
+        
+        // Réinitialiser le formulaire
+        document.getElementById('vehicleForm').reset();
+        document.getElementById('form-title').textContent = 'Ajouter un véhicule';
+    }, 100);
+}
+
+function toggleVehicleForm() {
+    const form = document.getElementById('vehicleForm');
+    const button = document.getElementById('toggleFormButton');
+    
+    if (form.style.display === 'none' || form.style.display === '') {
+        form.style.display = 'block';
+        button.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+            Masquer le formulaire
+        `;
+        // Réinitialiser le formulaire pour l'ajout d'un nouveau véhicule
+        document.getElementById('form-title').textContent = 'Ajouter un véhicule';
+        document.getElementById('vehicle-id-input').value = '';
+        document.getElementById('vehicle-brand').value = '';
+        document.getElementById('vehicle-model').value = '';
+        document.getElementById('vehicle-generation').value = '';
+        document.getElementById('vehicle-phase').value = '';
+        document.getElementById('vehicle-fuel').value = '';
+        document.getElementById('vehicle-motor-code').value = '';
+        document.getElementById('vehicle-power').value = '';
+        document.getElementById('vehicle-power-rpm').value = '';
+        document.getElementById('vehicle-torque').value = '';
+        document.getElementById('vehicle-torque-rpm').value = '';
+        document.getElementById('vehicle-engine-size').value = '';
+        document.getElementById('vehicle-architecture').value = '';
+        document.getElementById('vehicle-gearbox-type').value = '';
+        document.getElementById('vehicle-gear-count').value = '';
+        document.getElementById('vehicle-vmax').value = '';
+        document.getElementById('vehicle-acceleration').value = '';
+        document.getElementById('vehicle-consumption-mixed').value = '';
+        document.getElementById('vehicle-consumption-city').value = '';
+        document.getElementById('vehicle-consumption-highway').value = '';
+        document.getElementById('vehicle-co2').value = '';
+        document.getElementById('vehicle-euro-norm').value = '';
+        document.getElementById('vehicle-critair').value = '';
+        document.getElementById('vehicle-url').value = '';
+    } else {
+        form.style.display = 'none';
+        button.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14M5 12h14"/>
+            </svg>
+            Afficher le formulaire
+        `;
+    }
 }
 
 // Admin functions
@@ -624,7 +726,7 @@ async function editVehicle(vehicleId) {
             document.getElementById('vehicle-phase').value = vehicle.phase || '';
 
             // Correction du type de carburant
-            const fuelType = vehicle.motorisation?.type?.toLowerCase() || '';
+            const fuelType = vehicle.motorisation?.type || '';
             document.getElementById('vehicle-fuel').value = fuelType;
 
             document.getElementById('vehicle-motor-code').value = vehicle.motorisation?.code || '';
@@ -636,7 +738,7 @@ async function editVehicle(vehicleId) {
             document.getElementById('vehicle-architecture').value = vehicle.motorisation?.architecture || '';
 
             // Correction du type de boîte de vitesses
-            const gearboxType = vehicle.boite_vitesse?.type?.toLowerCase() || '';
+            const gearboxType = vehicle.boite_vitesse?.type || '';
             document.getElementById('vehicle-gearbox-type').value = gearboxType;
 
             document.getElementById('vehicle-gear-count').value = vehicle.boite_vitesse?.rapports || '';
@@ -710,6 +812,7 @@ function clearForm() {
     document.getElementById('vehicle-url').value = '';
 }
 
+// Fonctions d'import de véhicules
 async function importVehiclesFromJsonFiles() {
     const fileInput = document.getElementById('json-files');
     const files = fileInput.files;
@@ -782,6 +885,62 @@ async function importVehiclesFromJsonFiles() {
         progressBar.style.display = 'none';
         progressFill.style.width = '0%';
         fileInput.value = ''; // Réinitialiser le champ de fichier
+    }
+}
+
+async function importVehiclesFromText() {
+    const jsonContent = document.getElementById('json-content').value;
+    
+    if (!jsonContent) {
+        alert('Veuillez entrer du contenu JSON');
+        return;
+    }
+
+    try {
+        const vehicles = JSON.parse(jsonContent);
+        if (!Array.isArray(vehicles)) {
+            alert('Le JSON doit contenir un tableau de véhicules');
+            return;
+        }
+
+        const importButton = document.querySelector('.import-button');
+        const progressBar = document.querySelector('.progress-fill');
+        const progressText = document.querySelector('.progress-text');
+        
+        importButton.disabled = true;
+        let successCount = 0;
+        let errorCount = 0;
+
+        for (let i = 0; i < vehicles.length; i++) {
+            const vehicle = vehicles[i];
+            try {
+                if (!vehicle.id || !vehicle.marque || !vehicle.modele || !vehicle.generation) {
+                    throw new Error('Champs requis manquants (id, marque, modele, generation)');
+                }
+
+                await db.collection('vehicles').doc(vehicle.id).set(vehicle);
+                successCount++;
+            } catch (error) {
+                console.error('Erreur lors de l\'import du véhicule :', error);
+                errorCount++;
+            }
+
+            // Mise à jour de la barre de progression
+            const progress = ((i + 1) / vehicles.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `Import en cours : ${i + 1}/${vehicles.length} véhicules`;
+        }
+
+        await loadVehicles();
+        alert(`Import terminé : ${successCount} véhicules importés avec succès, ${errorCount} erreurs`);
+        
+        // Réinitialisation de l'interface
+        importButton.disabled = false;
+        progressBar.style.width = '0%';
+        progressText.textContent = '';
+        document.getElementById('json-content').value = '';
+    } catch (error) {
+        alert('Erreur lors de l\'analyse du JSON : ' + error.message);
     }
 }
 
@@ -876,62 +1035,6 @@ function downloadJsonFile(data, filename) {
     URL.revokeObjectURL(url);
 }
 
-async function importVehiclesFromText() {
-    const jsonContent = document.getElementById('json-content').value;
-    
-    if (!jsonContent) {
-        alert('Veuillez entrer du contenu JSON');
-        return;
-    }
-
-    try {
-        const vehicles = JSON.parse(jsonContent);
-        if (!Array.isArray(vehicles)) {
-            alert('Le JSON doit contenir un tableau de véhicules');
-            return;
-        }
-
-        const importButton = document.querySelector('.import-button');
-        const progressBar = document.querySelector('.progress-fill');
-        const progressText = document.querySelector('.progress-text');
-        
-        importButton.disabled = true;
-        let successCount = 0;
-        let errorCount = 0;
-
-        for (let i = 0; i < vehicles.length; i++) {
-            const vehicle = vehicles[i];
-            try {
-                if (!vehicle.id || !vehicle.marque || !vehicle.modele || !vehicle.generation) {
-                    throw new Error('Champs requis manquants (id, marque, modele, generation)');
-                }
-
-                await db.collection('vehicles').doc(vehicle.id).set(vehicle);
-                successCount++;
-            } catch (error) {
-                console.error('Erreur lors de l\'import du véhicule :', error);
-                errorCount++;
-            }
-
-            // Mise à jour de la barre de progression
-            const progress = ((i + 1) / vehicles.length) * 100;
-            progressBar.style.width = `${progress}%`;
-            progressText.textContent = `Import en cours : ${i + 1}/${vehicles.length} véhicules`;
-        }
-
-        await loadVehicles();
-        alert(`Import terminé : ${successCount} véhicules importés avec succès, ${errorCount} erreurs`);
-        
-        // Réinitialisation de l'interface
-        importButton.disabled = false;
-        progressBar.style.width = '0%';
-        progressText.textContent = '';
-        document.getElementById('json-content').value = '';
-    } catch (error) {
-        alert('Erreur lors de l\'analyse du JSON : ' + error.message);
-    }
-}
-
 async function downloadVehicleJson(vehicleId) {
     try {
         const doc = await db.collection('vehicles').doc(vehicleId).get();
@@ -985,5 +1088,83 @@ async function downloadVehicleJson(vehicleId) {
         }
     } catch (error) {
         alert('Erreur lors du téléchargement du JSON : ' + error.message);
+    }
+}
+
+// Ajouter des styles pour le spinner de chargement
+const style = document.createElement('style');
+style.textContent = `
+    .loading-spinner {
+        width: 40px;
+        height: 40px;
+        margin: 20px auto;
+        border: 4px solid var(--light-gray);
+        border-top: 4px solid var(--primary-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+`;
+document.head.appendChild(style);
+
+function importVehicle() {
+    const jsonInput = document.getElementById('jsonInput');
+    const progressBar = document.querySelector('.progress-fill');
+    const progressText = document.querySelector('.progress-text');
+    
+    try {
+        // Vérifier si le champ est vide
+        if (!jsonInput.value.trim()) {
+            throw new Error('Veuillez coller un JSON valide dans le champ.');
+        }
+
+        // Parser le JSON
+        const vehicleData = JSON.parse(jsonInput.value);
+        
+        // Vérifier la structure minimale du JSON
+        if (!vehicleData.id || !vehicleData.marque || !vehicleData.modele) {
+            throw new Error('Le JSON doit contenir au moins les champs id, marque et modele.');
+        }
+
+        // Mettre à jour la barre de progression
+        progressBar.style.width = '50%';
+        progressText.textContent = 'Importation en cours...';
+
+        // Sauvegarder dans Firestore
+        db.collection('vehicles').doc(vehicleData.id).set(vehicleData)
+            .then(() => {
+                // Mettre à jour la barre de progression
+                progressBar.style.width = '100%';
+                progressText.textContent = 'Importation réussie !';
+                
+                // Réinitialiser le formulaire
+                jsonInput.value = '';
+                
+                // Recharger la liste des véhicules
+                loadVehicles();
+                
+                // Envoyer un événement Analytics
+                analytics.logEvent('vehicle_imported', {
+                    vehicle_id: vehicleData.id,
+                    vehicle_brand: vehicleData.marque,
+                    vehicle_model: vehicleData.modele
+                });
+            })
+            .catch(error => {
+                throw new Error(`Erreur lors de la sauvegarde : ${error.message}`);
+            });
+    } catch (error) {
+        // Mettre à jour la barre de progression en cas d'erreur
+        progressBar.style.width = '0%';
+        progressText.textContent = `Erreur : ${error.message}`;
+        
+        // Envoyer un événement d'erreur à Analytics
+        analytics.logEvent('import_error', {
+            error_message: error.message
+        });
     }
 } 
