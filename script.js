@@ -36,6 +36,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     pageLoadTrace.start();
     
     try {
+        // Trace personnalisée pour tester Firebase Performance
+        const trace = perf.trace('test_perf_custom_event');
+        trace.start();
+
+        setTimeout(() => {
+            trace.stop();
+            console.log('✅ Trace personnalisée terminée : test_perf_custom_event');
+        }, 3000); // on simule 3 secondes de traitement
+
         console.log("Tentative de récupération des véhicules depuis Firestore...");
         // Récupérer les véhicules depuis Firestore
         const querySnapshot = await db.collection("vehicles").get();
