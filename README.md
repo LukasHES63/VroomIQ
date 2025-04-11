@@ -15,6 +15,7 @@ Si vous souhaitez accéder au site voici le lien : https://vroomiq-efa93.firebas
 - 1.2.4 : Correction de certains problèmes
 - 1.2.5 : Ajout de la fonction de monitoring
 - 1.2.6 : Correction de problèmes de monitoring
+- 1.2.7 : Modification du style de l'application
 
 ## 🚀 Fonctionnalités
 - Comparaison de modèles de voitures par marque, année, motorisation, etc.
