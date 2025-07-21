@@ -11,7 +11,7 @@
     "firebase": "^10.8.0",
     "firebase-admin": "^11.11.0",
     "@firebase/firestore": "^4.5.0",
-    "@firebase/performance": "^0.8.0"
+    "@firebase/performance": "^0.7.8"
   },
   "devDependencies": {
     "@playwright/test": "^1.51.1",
